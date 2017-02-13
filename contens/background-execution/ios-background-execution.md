@@ -6,7 +6,7 @@
 
 ###使用方法：
 
-```
+```swift
 func applicationDidEnterBackground(_ application: UIApplication) {
     var bgTask = UIBackgroundTaskInvalid
     
@@ -50,7 +50,7 @@ func applicationDidEnterBackground(_ application: UIApplication) {
 
 1、创建一个支持后台传输的URLSession实例：
 
-```
+```swift
 var backgroundSession: URLSession {
     let configuration = URLSessionConfiguration.background(withIdentifier: "com.yourcompany.appId.BackgroundSession")
 
@@ -63,7 +63,7 @@ var backgroundSession: URLSession {
 
 2、创建传输任务（URLSessionDownloadTask或URLSessionUploadTask），并开启任务
 
-```
+```swift
 func startBackgroundDownload() {
     let url = URL(string: "http://server/picture.png")
     let task = backgroundSession.downloadTask(with: URLRequest(url: url!)) { (data, response, error) in
@@ -74,7 +74,7 @@ func startBackgroundDownload() {
 ```
 3、如果当传输任务完成的时候，app仍在运行（不论后台还是前台），session对象都会调用delegate的相关函数。如果app被系统终止或被挂起，所有传输任务完成的时候，会调用`application:handleEventsForBackgroundURLSession: completionHandler:`方法，在这里更新app的UI界面。
 
-```
+```swift
 func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
 
     // 在这里更新UI
@@ -130,7 +130,7 @@ func application(_ application: UIApplication, handleEventsForBackgroundURLSessi
 
 2、指定background fetch的时间间隔
 
-```
+```swift
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
     return true
@@ -142,7 +142,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions lau
 <a name="background-fetch-callback"></a>
 3、实现AppDelegate的方法`application: performFetchWithCompletionHandler:`
 
-```
+```swift
 func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
     
     //  执行获取数据的任务
@@ -176,7 +176,7 @@ app被唤醒后会执行`application: performFetchWithCompletionHandler:`这个�
 
 2、修改推送的payload。添加`content-available`，并设置为1，另外可以添加自定义的`content-id`，用于区分不同的事件，结果如下：
 
-```
+```json
 {
     "aps" : {
         "content-available" : 1
@@ -188,7 +188,7 @@ app被唤醒后会执行`application: performFetchWithCompletionHandler:`这个�
 
 3、当app收到一条带有 `content-avaiable` 的推送通知时，`application:didReceiveRemoteNotification:fetchCompletionHandler:`会被调用，后续操作与[background fetch的相关内容一致](#background-fetch-callback)
 
-```
+```swift
 func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
     
     //  根据contentID执行相关的操作
