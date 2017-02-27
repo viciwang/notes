@@ -130,3 +130,8 @@ object
 	})
 	.addDisposableTo(disposeBag)
 ```
+
+##参考
+* [RxSwift Getting Started](https://github.com/ReactiveX/RxSwift/blob/master/Documentation/GettingStarted.md)
+* [Getting Started With RxSwift and RxCocoa](https://www.raywenderlich.com/138547/getting-started-with-rxswift-and-rxcocoa)
+* [ReactiveCocoa vs RxSwift](https://www.raywenderlich.com/126522/reactivecocoa-vs-rxswift)
