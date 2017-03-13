@@ -49,7 +49,7 @@ GCD提供并管理着一些FIFO的队列，开发者可以向不同的队列提�
 
 ***`全局队列（global queue）`***是系统提供的一种**并发队列**，GCD根据优先级（iOS 10根据QoS）将`全局队列`主要分为4大类：background、utility、userInitiated和userInteractive，其优先级依次增加。还有另外两种：default和unspecified作为补充，详见下面的QoS介绍。
 
-***`自定义队列`*** 是指开发者自己创建的队列，可以是并行的，也可以是串行的。
+***`自定义队列`*** 是指开发者自己创建的队列，可以是并发的，也可以是串行的。
 
 ## Quality of Service (QoS)
 `Quality of Service`是iOS 8引入的新概念，用于指定任务的重要程度，即执行的优先级，优先级越高的任务会越快执行，并且拥有更多资源。
