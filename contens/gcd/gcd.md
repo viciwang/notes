@@ -1,6 +1,9 @@
+# Swift 3 GCD基本概念介绍
 维基百科中对于GCD的定义是
 
 > Grand Central Dispatch (GCD) is a technology developed by Apple Inc. to optimize application support for systems with multi-core processors and other symmetric multiprocessing systems.[2] It is an implementation of task parallelism based on the thread pool pattern. The fundamental idea is to move the management of the thread pool out of the hands of the developer, and closer to the operating system. The developer injects "work packages" into the pool oblivious of the pool's architecture. This model improves simplicity, portability and performance.
+
+从中可以提取出以下3点：
 
 1. GCD是Apple开发的一个多核编程的技术
 2. GCD是基于线程池实现任务并行的
@@ -26,15 +29,15 @@ swift中GCD对应的库是`Dispatch `，其定义是
 
 用于描述一个函数相对于另一个任务完成。一个同步函数只在完成了它预定的任务后才返回，而一个异步函数会立即返回，预定的任务会完成但不会等它完成，即同步函数会阻塞当前线程去执行下一个函数，异步函数则不会阻塞当前线程。
 
-**串行队列（Serial Queues）**
+**`串行队列（Serial Queues）`**
 
 每次只执行一个任务，每个任务只在前一个任务完成时才开始。
 
-**并发队列（Concurrent Queues）**
+**`并发队列（Concurrent Queues）`**
 
-并发队列只保证任务会按照被添加的顺序开始执行，而每个任务开始执行的时刻取决于GCD
+同一时间可以有多个任务被执行。并发队列只保证任务会按照被添加的顺序开始执行，而每个任务开始执行的时刻取决于GCD
 
-### 队列类型
+## 队列类型
 
 GCD提供并管理着一些FIFO的队列，开发者可以向不同的队列提交代码块。队列类型有：
 
@@ -44,11 +47,11 @@ GCD提供并管理着一些FIFO的队列，开发者可以向不同的队列提�
 
 ***`主队列（main queue）`***是系统提供的一个特殊队列，它是一个**串行队列**，并且只有一条线程，即主线程，而主线程是唯一可用于更新 UI 的线程。
 
-***`全局队列（global queue）`***是系统提供的一种**并发队列**，GCD根据优先级（iOS 10根据QoS）将`全局队列`分为几类。
+***`全局队列（global queue）`***是系统提供的一种**并发队列**，GCD根据优先级（iOS 10根据QoS）将`全局队列`主要分为4大类：background、utility、userInitiated和userInteractive，其优先级依次增加。还有另外两种：default和unspecified作为补充，详见下面的QoS介绍。
 
 ***`自定义队列`*** 是指开发者自己创建的队列，可以是并行的，也可以是串行的。
 
-### Quality of Service (QoS)
+## Quality of Service (QoS)
 `Quality of Service`是iOS 8引入的新概念，用于指定任务的重要程度，即执行的优先级，优先级越高的任务会越快执行，并且拥有更多资源。
 
 需要指出QoS不仅用于GCD，而且NSOperation, NSOperationQueue, NSThread objects, dispatch queues, and pthreads (POSIX threads)中都用到QoS去区分不同的任务类型。
@@ -98,7 +101,7 @@ public enum QoSClass {
 
 *以下API均基于iOS 10.0*
 
-### 获取及创建GCD队列
+## 获取及创建GCD队列
 获取主队列：
 
 ```swift
@@ -124,7 +127,7 @@ public convenience init(label: String, qos: DispatchQoS = default, attributes: D
 ```
 可以指定更多参数，定制队列
 
-### 执行任务
+## 执行任务
 获取到一个队列之后，可以通过其`async`和`sync`函数来异步和同步任务，最简单的方式如下
 
 ```swift
@@ -158,7 +161,7 @@ public init(qos: DispatchQoS = default, flags: DispatchWorkItemFlags = default, 
 ```
 看出，`DispatchWorkItem`可以指定`QoS`和`DispatchWorkItemFlags`,一个block用于执行业务代码。使用`DispatchWorkItem`可以**取消**已经提交的任务（通过调用其`DispatchWorkItem`实例的cancle行数），但前提是DispatchWorkItem还没有开始执行。
 
-### 延迟执行
+## 延迟执行
 swift 3 的GCD延迟执行有以下几个API:
 
 ```swift
