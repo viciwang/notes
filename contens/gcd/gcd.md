@@ -12,7 +12,7 @@ swift中GCD对应的库是`Dispatch `，其定义是
 
 可见，GCD负责管理线程，开发者只需向GCD提供实际任务就行，提供任务的方式主要是代码块（block）的方式。这对开发者带来的思维转变是：将工作考虑为一个队列，而不是一堆线程。这种并行的抽象模型更容易掌握和使用。
 
-## 一些基本概念
+## 基本概念
 
 **`串行（Serial）`和`并发（Concurrent）`**
 
@@ -167,19 +167,36 @@ public func asyncAfter(wallDeadline: DispatchWallTime, qos: DispatchQoS = defaul
 public func asyncAfter(deadline: DispatchTime, execute: DispatchWorkItem)
 public func asyncAfter(wallDeadline: DispatchWallTime, execute: DispatchWorkItem)
 ```
-一般用DispatchTime.now()和用法：
+一般用DispatchTime.now()或DispatchWallTime.now()加上延迟的时间得到一个时间点，如DispatchTime.now() + 2即延迟两秒。用法：
 
 ```swift
-DispatchQueue.main.asyncAfter(deadline: .now() + 2) {  
+DispatchQueue.main.asyncAfter(deadline: .now() + 2) {  // 延迟两秒执行
     // work
 }
 
-DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {
+DispatchQueue.main.asyncAfter(wallDeadline: .now() + 2) {	// 延迟两秒执行
     // work
 }
 ```
-`DispatchTime`和`DispatchWallTime`的区别是，前者是系统的启动时间（不包含系统睡眠时间），后者是挂钟的时间（也就是你在系统栏里看到的当前时间）。
+这些API中主要的不同点是一种使用`DispatchTime `，另一种使用`DispatchWallTime `来描述时间
 
+官方文档对`DispatchTime`描述是
+> DispatchTime represents a point in time relative to the default clock with nanosecond precision. On Apple platforms, the default clock is based on the Mach absolute time unit.
+
+对`DispatchWallTime`的描述是
+> DispatchTime represents an absolute point in time according to the wall clock with microsecond precision. On Apple platforms, the default clock is based on the result of gettimeofday(2).
+
+结合这两个回答
+
+[https://forums.developer.apple.com/thread/49361](https://forums.developer.apple.com/thread/49361)
+
+[http://stackoverflow.com/questions/26062702/what-is-the-difference-between-dispatch-time-and-dispatch-walltime-and-in-what-s](http://stackoverflow.com/questions/26062702/what-is-the-difference-between-dispatch-time-and-dispatch-walltime-and-in-what-s)
+
+可以看出两者的不同在于：
+
+`DispatchTime`是系统的启动时间（以纳秒为单位），当系统睡眠的时候时间停止，即`DispatchTime `不包含系统睡眠时间。`DispatchWallTime`是绝对时间（以毫秒为单位），即挂钟的时间（也就是你在系统栏里看到的当前时间）。
+
+举个例子：如果在16:00时刻指定一个任务要在1个小时后执行，但5分钟后系统睡眠50分钟。如果用`DispatchWallTime`则任务会在17:00执行，而如果用`DispatchTime `则任务会在系统唤醒之后再运行55分钟，即在17:50执行。
 
 ## 参考
 * [NSOperation](http://nshipster.com/nsoperation/)
