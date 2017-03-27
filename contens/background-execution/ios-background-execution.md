@@ -1,10 +1,10 @@
-#iOS后台任务概述
+# iOS后台任务概述
 
-##短时间的后台任务
+## 短时间的后台任务
 
 当app进入到后台时，系统会将app挂起。如果这时app的一个任务刚好执行到一半，需要一点额外的时间来完成任务，可以使用`beginBackgroundTask`来启动后台任务。
 
-###使用方法：
+### 使用方法：
 
 ```swift
 func applicationDidEnterBackground(_ application: UIApplication) {
@@ -38,14 +38,14 @@ func applicationDidEnterBackground(_ application: UIApplication) {
 
 3、任务执行完成之后，调用`UIApplication.shared`的函数` endBackgroundTask:`结束后台任务，app被挂起。另外，还能通过`UIApplication.shared.backgroundTimeRemaining`获得剩余的后台时间。
 
-###特点：
+### 特点：
 
 * 不需要在info.plist中申请权限，
 * 后台存活的时间有限（官方没有给出确切的时间，但实际测试是有180秒）
 * 可以执行任何代码。
 
 
-##后台传输服务（Background Transfer Service）
+## 后台传输服务（Background Transfer Service）
 使用配置了支持后台传输的URLSession对象创建一个上传或下载任务，系统会在另一个进程执行这些传输任务。如果app进入挂起状态或被系统终止，传输任务会在后台继续。
 
 1、创建一个支持后台传输的URLSession实例：
@@ -94,19 +94,19 @@ func application(_ application: UIApplication, handleEventsForBackgroundURLSessi
 
 系统会重新启动app，`application:handleEventsForBackgroundURLSession: completionHandler:`也就会在`application:didFinishLaunchingWithOptions:`之后调用。
 
-###限制：
+### 限制：
 
 * 只支持http和https协议
 * 只通过wifi来进行传输
 * 系统会根据可用资源进行优化，无法保证后台传输任务一直在执行
 * NSURLSessionDataTasks不支持后台传输
 
-###一些应用场景：
+### 一些应用场景：
 
 * 后台下载一些大文件（如电影等），并在下载完成后发送一个本地推送，告知用户，获得良好的用户体验
 * 配合下面的 [`Remote notifications`](#remote-notifications)(静默推送)，收到通知后，开启后台下载（如网盘数据有更新，）
 
-##后台任务
+## 后台任务
 
 | 后台模式 | UIBackgroundMode value | 描述 |
 | --- | --- | --- |
@@ -171,7 +171,7 @@ app被唤醒后会执行`application: performFetchWithCompletionHandler:`这个�
 * 双击home键，用户会看到新的app缩略图，即系统是通过`completionHandler`来报告并且生成截图的。
 
 <a name="remote-notifications"></a>
-###Remote notifications
+### Remote notifications
 1、与上面的`background fetch`一样开启`remote notification`权限
 
 2、修改推送的payload。添加`content-available`，并设置为1，另外可以添加自定义的`content-id`，用于区分不同的事件，结果如下：
@@ -200,12 +200,12 @@ func application(_ application: UIApplication, didReceiveRemoteNotification user
 }
 ```
 
-##小结：
+## 小结：
 * 后台传输、`background fetch`和`remote notifications`在appDelegate对应的处理函数中都包含了一个后台完成的回调`completionHandler`，让系统更新app的界面截图，可以直接呈现最新内容，而不需用户重新打开app
 
 
 
-##参考：
+## 参考：
 * [Background Execution](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/BackgroundExecution/BackgroundExecution.html)
 * [Background Modes Tutorial: Getting Started](https://www.raywenderlich.com/143128/background-modes-tutorial-getting-started)
 * [iOS 后台运行实现总结](http://www.jianshu.com/p/d3e279de2e32)

@@ -141,7 +141,7 @@ public enum QueuePriority : Int {
 
 
 
-##参考：
+## 参考：
 
 * [https://developer.apple.com/reference/foundation/operation](https://developer.apple.com/reference/foundation/operation)
 * [http://nshipster.com/nsoperation/](http://nshipster.com/nsoperation/)

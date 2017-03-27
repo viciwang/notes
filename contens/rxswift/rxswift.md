@@ -1,4 +1,4 @@
-#RxSwift基本用法
+# RxSwift基本用法
 
 `RxSwift`的一个重要概念是`Observable`，即类`Obserable<Element>`。`Obserable<Element>`是一个事件序列，Element是其事件中携带的数据类型，并且`Obserable<Element>`能异步接收数据。
 
@@ -22,7 +22,7 @@ next*(error|completed)?
 * 如果error或completed事件被接收，序列将不会再产生任何事件。
 
 
-##创建`Observable`对象
+## 创建`Observable`对象
 * 通过create函数创建，如
 
 ```swift
@@ -44,7 +44,7 @@ aFunction(0).subscribe(onNext: { n in
 0
 ```
 
-##资源释放
+## 资源释放
 
 * **通过调用订阅者的`dispose`函数，结束一个事件序列，释放资源**
 
@@ -94,7 +94,7 @@ sequence
 ```
 
 
-##热信号和冷信号
+## 热信号和冷信号
 冷热信号的概念源于.NET框架[Reactive Extensions(RX)](https://msdn.microsoft.com/en-us/library/hh242985.aspx)中的Hot Observable和Cold Observable，两者的区别是：
 >  Hot Observable是主动的，尽管你并没有订阅事件，但是它会时刻推送，就像鼠标移动；而Cold Observable是被动的，只有当你订阅的时候，它才会发布消息。
 > 
@@ -105,7 +105,7 @@ sequence
 * [细说ReactiveCocoa的冷信号与热信号（一）](http://tech.meituan.com/talk-about-reactivecocoas-cold-signal-and-hot-signal-part-1.html)
 * [细说ReactiveCocoa的冷信号与热信号（二）：为什么要区分冷热信号](http://tech.meituan.com/talk-about-reactivecocoas-cold-signal-and-hot-signal-part-2.html)
 
-##监听变量值的变化
+## 监听变量值的变化
 RxSwift提供`Variable`类用于监听变量值的变化。
 
 ```swift
@@ -131,7 +131,7 @@ object
 	.addDisposableTo(disposeBag)
 ```
 
-##参考
+## 参考
 * [RxSwift Getting Started](https://github.com/ReactiveX/RxSwift/blob/master/Documentation/GettingStarted.md)
 * [Getting Started With RxSwift and RxCocoa](https://www.raywenderlich.com/138547/getting-started-with-rxswift-and-rxcocoa)
 * [ReactiveCocoa vs RxSwift](https://www.raywenderlich.com/126522/reactivecocoa-vs-rxswift)
