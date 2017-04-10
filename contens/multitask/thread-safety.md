@@ -77,8 +77,7 @@ while (index > 0) {
 ```
 这段代码中分别对self.count循环加100000，按照预期两个循环结束之后self.count的值应该是200000，但实际self.count的值却小于200000，下面是某一次执行的结果：
 
-![](thread-safety.png)
-
+<div align="center"> <image src="thread-safety.png" /></div>
 
 分析以上代码，有以下三点需要注意：
 
@@ -172,6 +171,7 @@ self.count = self.count + 1;
 
 @end
 ```
+
 类似的还有集合类的操作，例如NSArray等的长度判断。
 
 ## 如何保证线程安全
@@ -226,7 +226,9 @@ self.count = self.count + 1;
 @end
 
 ```
+
 也可直接锁住整个while循环
+
 
 ```objective-c
 @synchronized (self.lockId) {
@@ -237,10 +239,18 @@ self.count = self.count + 1;
     }
 }
 ```
-对于各种锁，已经其性能比较，可参见：[深入理解 iOS 开发中的锁](https://bestswifter.com/ios-lock/)
+
+对于各种锁的介绍，以及其性能比较，可参见：[深入理解 iOS 开发中的锁](https://bestswifter.com/ios-lock/)
 
 ### 其他保证线程安全的点：
-* 
+* 使用不可修改的数据类型
+
+苹果的一份文档（[Thread Safety Summary](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Multithreading/ThreadSafetySummary/ThreadSafetySummary.html#//apple_ref/doc/uid/10000057i-CH12-SW1)）列出了SDK中线程安全的类，其中不可修改的类都是线程安全的，而其对应的可修改的类都是线程不安全的。
+
+* 线程自行存储变量
+
+线程保存一份私有的变量拷贝，这样就不会受其他线程的影响。
+
 
 ## 参考
 * [Thread-Safe Class Design](https://www.objc.io/issues/2-concurrency/thread-safe-class-design/)
