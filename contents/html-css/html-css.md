@@ -3,6 +3,8 @@
 
 ### BFC
 
+[https://www.w3.org/TR/CSS2/visuren.html#visual-model-intro](https://www.w3.org/TR/CSS2/visuren.html#visual-model-intro)
+
 [https://www.w3ctech.com/topic/865](https://www.w3ctech.com/topic/865)
 
 ### margin 折叠
